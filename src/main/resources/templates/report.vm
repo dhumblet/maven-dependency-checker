@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Maven Dependency Report</title>
+</head>
+<body>
+<div class="main-content container-fluid">
+    <div class="col-12">
+        <div class="card card-table">
+            <div class="card-header">
+                <div class="title">Dependencies</div>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-borderless">
+                    <thead>
+                    <tr>
+                        <th style="width:20%;">Group id</th>
+                        <th style="width:20%;">Artifact id</th>
+                        <th style="width:20%;">Current version</th>
+                        <th style="width:20%;">Latest version</th>
+                        <th style="width:20%;"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="no-border-x">
+                        #foreach( $entry in $model.outOfDateEntries )
+                            <tr>
+                                <td>$entry.groupId</td>
+                                <td>$entry.artifactId</td>
+                                <td>$entry.currentVersion</td>
+                                <td>$entry.lastVersion</td>
+                                <td class="text-success">$entry.status</td>
+                            </tr>
+                        #end
+
+                        #foreach( $entry in $model.upToDateEntries )
+                        <tr>
+                            <td>$entry.groupId</td>
+                            <td>$entry.artifactId</td>
+                            <td>$entry.currentVersion</td>
+                            <td>$entry.lastVersion</td>
+                            <td class="text-success">$entry.status</td>
+                        </tr>
+                        #end
+
+                        #foreach( $entry in $model.notFoundEntries )
+                        <tr>
+                            <td>$entry.groupId</td>
+                            <td>$entry.artifactId</td>
+                            <td>$entry.currentVersion</td>
+                            <td>$entry.lastVersion</td>
+                            <td class="text-success">$entry.status</td>
+                        </tr>
+                        #end
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
