@@ -52,7 +52,7 @@ public class DependencyCounterMojo extends AbstractMojo {
         buildHtmlFromArtifacts();
     }
 
-    //http://artifactory.jbuild.intranet.ccvlab.eu/artifactory/api/search/gavc?g=be.j4s.payment.products.vpos&a=vpos.common
+
     private void printRepository(Repository repository) {
         StringBuilder sb = new StringBuilder("Repository:");
         sb.append(repository.getId()).append(" ");
