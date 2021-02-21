@@ -4,6 +4,7 @@ import dh.code.dependency.checker.domain.Artifact;
 import dh.code.dependency.checker.model.ReportModel;
 import dh.code.dependency.checker.service.ArtifactService;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Repository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -25,6 +26,7 @@ import java.util.Map;
 @Mojo(name = "dependency-checker", defaultPhase = LifecyclePhase.COMPILE)
 public class DependencyCounterMojo extends AbstractMojo {
     List<Dependency> dependencies = new ArrayList<>();
+    List<Repository> repositories = new ArrayList<>();
     Map<String, Artifact> artifacts = new HashMap<>();
 
     ArtifactService artifactService = new ArtifactService();
@@ -39,9 +41,26 @@ public class DependencyCounterMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         dependencies = project.getDependencies();
 
+        artifactService.setRepositories(project.getRepositories());
+
+        for (Object repository : project.getRepositories()) {
+            printRepository((Repository) repository);
+        }
+
         printNumberOfDependencies();
         buildArtifactsFromDependencies();
         buildHtmlFromArtifacts();
+    }
+
+    //http://artifactory.jbuild.intranet.ccvlab.eu/artifactory/api/search/gavc?g=be.j4s.payment.products.vpos&a=vpos.common
+    private void printRepository(Repository repository) {
+        StringBuilder sb = new StringBuilder("Repository:");
+        sb.append(repository.getId()).append(" ");
+        sb.append(repository.getName()).append(" ");
+        sb.append(repository.getUrl()).append(" ");
+
+
+        getLog().info(sb);
     }
 
     public void printNumberOfDependencies() {
@@ -72,7 +91,7 @@ public class DependencyCounterMojo extends AbstractMojo {
             VelocityContext context = new VelocityContext();
             context.put("model", model);
 
-            Writer writer = new FileWriter(new File("target/report.html"));
+            Writer writer = new FileWriter(new File("report.html"));
 
             Velocity.mergeTemplate("templates/report.vm", "UTF-8", context, writer);
 
